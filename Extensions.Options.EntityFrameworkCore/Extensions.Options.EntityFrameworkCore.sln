@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensions.Options.EntityFrameworkCore", "Extensions.Options.EntityFrameworkCore\Extensions.Options.EntityFrameworkCore.csproj", "{E4F21AAA-E56F-440C-844E-81DF1EC68C83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{592A7124-CD70-43CC-83F1-15CF6B64A075}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCoreConfigurationSample", "EFCoreConfigurationSample\EFCoreConfigurationSample.csproj", "{F39A7D29-44B6-45CD-B9B7-A8264D5B9134}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4F21AAA-E56F-440C-844E-81DF1EC68C83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4F21AAA-E56F-440C-844E-81DF1EC68C83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4F21AAA-E56F-440C-844E-81DF1EC68C83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4F21AAA-E56F-440C-844E-81DF1EC68C83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F39A7D29-44B6-45CD-B9B7-A8264D5B9134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F39A7D29-44B6-45CD-B9B7-A8264D5B9134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F39A7D29-44B6-45CD-B9B7-A8264D5B9134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F39A7D29-44B6-45CD-B9B7-A8264D5B9134}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F39A7D29-44B6-45CD-B9B7-A8264D5B9134} = {592A7124-CD70-43CC-83F1-15CF6B64A075}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {132721AD-5726-4B25-B507-AE177E289C49}
+	EndGlobalSection
+EndGlobal
