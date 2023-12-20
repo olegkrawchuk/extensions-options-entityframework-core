@@ -6,12 +6,11 @@ using System.Linq.Expressions;
 
 namespace Extensions.Options.EntityFrameworkCore.SourceBuilder;
 
-public class EntityFrameworkCoreConfigurationSource<TConfigEntity> : IConfigurationSource where TConfigEntity : class, IConfigEntity
+public class EntityFrameworkCoreConfigurationSource<TDbContext, TConfigEntity> : IConfigurationSource
+    where TConfigEntity : class, IConfigEntity
+    where TDbContext : DbContext
 {
-    /// <summary>
-    /// Делегат, яким ми отримаємо DbContext 
-    /// </summary>
-    public required Func<DbContext> GetContextFunc { get; init; }
+    public required IServiceProvider ServiceProvider { get; init; }
 
     public required Expression<Func<TConfigEntity, bool>>? Filter { get; init; }
 
@@ -19,6 +18,6 @@ public class EntityFrameworkCoreConfigurationSource<TConfigEntity> : IConfigurat
 
     public IConfigurationProvider Build(IConfigurationBuilder builder)
     {
-        return new EntityFrameworkCoreConfigurationProvider<TConfigEntity>(this);
+        return new EntityFrameworkCoreConfigurationProvider<TDbContext, TConfigEntity>(this);
     }
 }

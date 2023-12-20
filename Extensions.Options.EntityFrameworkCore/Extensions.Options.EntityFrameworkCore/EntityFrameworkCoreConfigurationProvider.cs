@@ -1,18 +1,21 @@
 ﻿using Extensions.Options.EntityFrameworkCore.SourceBuilder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
 
 namespace Extensions.Options.EntityFrameworkCore;
 
-public class EntityFrameworkCoreConfigurationProvider<TConfigEntity> : ConfigurationProvider, IDisposable where TConfigEntity : class, IConfigEntity
+public class EntityFrameworkCoreConfigurationProvider<TDbContext, TConfigEntity> : ConfigurationProvider, IDisposable
+    where TConfigEntity : class, IConfigEntity
+    where TDbContext : DbContext
 {
-    private readonly EntityFrameworkCoreConfigurationSource<TConfigEntity> _source;
+    private readonly EntityFrameworkCoreConfigurationSource<TDbContext, TConfigEntity> _source;
     private readonly IDisposable? _changeTokenRegistration;
 
-    public EntityFrameworkCoreConfigurationProvider(EntityFrameworkCoreConfigurationSource<TConfigEntity> source)
+    public EntityFrameworkCoreConfigurationProvider(EntityFrameworkCoreConfigurationSource<TDbContext, TConfigEntity> source)
     {
         _source = source;
 
@@ -27,7 +30,8 @@ public class EntityFrameworkCoreConfigurationProvider<TConfigEntity> : Configura
 
     public override void Load()
     {
-        using var context = _source.GetContextFunc();
+        using var scope = _source.ServiceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<TDbContext>();
 
         var query = context.Set<TConfigEntity>().AsNoTracking();
 
@@ -38,7 +42,7 @@ public class EntityFrameworkCoreConfigurationProvider<TConfigEntity> : Configura
 
         try
         {
-            Data = query.ToDictionary(e => e.Name, e => e.Value);
+            Data = query.Select(p => new { p.Name, p.Value }).ToDictionary(e => e.Name, e => e.Value);
         }
         catch
         {

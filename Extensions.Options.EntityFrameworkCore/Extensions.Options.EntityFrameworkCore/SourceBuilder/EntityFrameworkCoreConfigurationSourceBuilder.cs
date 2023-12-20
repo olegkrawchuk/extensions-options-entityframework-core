@@ -5,27 +5,29 @@ using System.Linq.Expressions;
 
 namespace Extensions.Options.EntityFrameworkCore.SourceBuilder;
 
-internal class EntityFrameworkCoreConfigurationSourceBuilder<TConfigEntity> : IEntityFrameworkCoreConfigurationSourceBuilder<TConfigEntity>
+internal class EntityFrameworkCoreConfigurationSourceBuilder<TDbContext, TConfigEntity>
+    : IEntityFrameworkCoreConfigurationSourceBuilder<TDbContext, TConfigEntity>
     where TConfigEntity : class, IConfigEntity
+    where TDbContext : DbContext
 {
-    public Func<DbContext>? GetContextFunc { get; private set; }
+    public IServiceProvider? ServiceProvider { get; private set; }
     public Expression<Func<TConfigEntity, bool>>? Filter { get; private set; }
     public TimeSpan? PeriodicalRefreshTimeSpan { get; private set; }
 
 
-    public IEntityFrameworkCoreConfigurationSourceBuilder<TConfigEntity> UseGetDbContextFunc(Func<DbContext> getDbContextFunc)
+    public IEntityFrameworkCoreConfigurationSourceBuilder<TDbContext, TConfigEntity> UseServiceProvider(IServiceProvider serviceProvider)
     {
-        GetContextFunc = getDbContextFunc;
+        ServiceProvider = serviceProvider;
         return this;
     }
 
-    public IEntityFrameworkCoreConfigurationSourceBuilder<TConfigEntity> UseQueryFilter(Expression<Func<TConfigEntity, bool>>? predicate)
+    public IEntityFrameworkCoreConfigurationSourceBuilder<TDbContext, TConfigEntity> UseQueryFilter(Expression<Func<TConfigEntity, bool>>? predicate)
     {
         Filter = predicate;
         return this;
     }
 
-    public IEntityFrameworkCoreConfigurationSourceBuilder<TConfigEntity> EnablePeriodicalAutoRefresh(TimeSpan refreshInterval)
+    public IEntityFrameworkCoreConfigurationSourceBuilder<TDbContext, TConfigEntity> EnablePeriodicalAutoRefresh(TimeSpan refreshInterval)
     {
         if (refreshInterval < TimeSpan.Zero)
             throw new Exception($"Refresh interval must be positive.");
@@ -36,16 +38,16 @@ internal class EntityFrameworkCoreConfigurationSourceBuilder<TConfigEntity> : IE
 
 
 
-    public EntityFrameworkCoreConfigurationSource<TConfigEntity> Build()
+    public EntityFrameworkCoreConfigurationSource<TDbContext, TConfigEntity> Build()
     {
-        if (GetContextFunc == null)
+        if (ServiceProvider == null)
         {
-            throw new ArgumentNullException(nameof(GetContextFunc), "Get Context delegate is null");
+            throw new ArgumentNullException(nameof(ServiceProvider), "ServiceProvider is null");
         }
 
-        var source = new EntityFrameworkCoreConfigurationSource<TConfigEntity>()
+        var source = new EntityFrameworkCoreConfigurationSource<TDbContext, TConfigEntity>()
         {
-            GetContextFunc = GetContextFunc,
+            ServiceProvider = ServiceProvider,
             Filter = Filter
         };
 

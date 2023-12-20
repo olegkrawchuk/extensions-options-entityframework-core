@@ -4,14 +4,16 @@ using System.Linq.Expressions;
 
 namespace Extensions.Options.EntityFrameworkCore.SourceBuilder;
 
-public interface IEntityFrameworkCoreConfigurationSourceBuilder<TConfigEntity> where TConfigEntity : class, IConfigEntity
+public interface IEntityFrameworkCoreConfigurationSourceBuilder<TDbContext, TConfigEntity>
+    where TConfigEntity : class, IConfigEntity
+    where TDbContext : DbContext
 {
     // TODO: придумати інший спосіб отримати DbContext
-    IEntityFrameworkCoreConfigurationSourceBuilder<TConfigEntity> UseGetDbContextFunc(Func<DbContext> getDbContextFunc);
+    IEntityFrameworkCoreConfigurationSourceBuilder<TDbContext, TConfigEntity> UseServiceProvider(IServiceProvider serviceProvider);
 
-    IEntityFrameworkCoreConfigurationSourceBuilder<TConfigEntity> UseQueryFilter(Expression<Func<TConfigEntity, bool>>? predicate);
+    IEntityFrameworkCoreConfigurationSourceBuilder<TDbContext, TConfigEntity> UseQueryFilter(Expression<Func<TConfigEntity, bool>>? predicate);
 
-    IEntityFrameworkCoreConfigurationSourceBuilder<TConfigEntity> EnablePeriodicalAutoRefresh(TimeSpan refreshInterval);
+    IEntityFrameworkCoreConfigurationSourceBuilder<TDbContext, TConfigEntity> EnablePeriodicalAutoRefresh(TimeSpan refreshInterval);
 
-    EntityFrameworkCoreConfigurationSource<TConfigEntity> Build();
+    EntityFrameworkCoreConfigurationSource<TDbContext, TConfigEntity> Build();
 }

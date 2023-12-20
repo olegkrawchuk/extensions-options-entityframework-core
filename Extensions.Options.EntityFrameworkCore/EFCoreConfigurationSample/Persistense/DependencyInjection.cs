@@ -15,15 +15,10 @@ internal static class DependencyInjection
 
     public static ConfigurationManager AddEntityFrameworkCoreConfiguration(this ConfigurationManager configurationManager, IServiceCollection services)
     {
-        configurationManager.AddEntityFramework<DbOptionsEntity>(builder =>
-        {
-            var scope = services.BuildServiceProvider().CreateScope();
-
-            builder
-                .UseGetDbContextFunc(() => scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
-                .UseQueryFilter(e => e.Value != null)
-                .EnablePeriodicalAutoRefresh(TimeSpan.FromSeconds(5));
-        });
+        configurationManager.AddEntityFramework<ApplicationDbContext, DbOptionsEntity>(builder => builder
+            .UseServiceProvider(services.BuildServiceProvider())
+            .UseQueryFilter(e => e.Value != null)
+            .EnablePeriodicalAutoRefresh(TimeSpan.FromSeconds(15)));
 
         return configurationManager;
     }
