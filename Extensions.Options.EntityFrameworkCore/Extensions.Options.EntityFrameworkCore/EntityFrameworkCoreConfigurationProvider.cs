@@ -1,4 +1,5 @@
-﻿using Extensions.Options.EntityFrameworkCore.SourceBuilder;
+﻿using Extensions.Options.EntityFrameworkCore.Helpers;
+using Extensions.Options.EntityFrameworkCore.SourceBuilder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,8 @@ public class EntityFrameworkCoreConfigurationProvider<TDbContext, TConfigEntity>
 
     public override void Load()
     {
+        using var activity = TracingHelper.NewActivity("LoadConfiguration");
+
         using var scope = _source.ServiceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<TDbContext>();
 
