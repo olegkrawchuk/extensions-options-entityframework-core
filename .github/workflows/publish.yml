@@ -56,4 +56,9 @@ jobs:
           user: ${{ secrets.NUGET_USER }}
 
       - name: Push to nuget.org
-        run: dotnet nuget push "./nupkg/*.nupkg" --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+        # dotnet.exe receives argument strings literally from PowerShell — "*.nupkg" is not
+        # shell-expanded before reaching it, so the wildcard must be resolved here instead.
+        run: |
+          $package = Get-ChildItem -Path ./nupkg -Filter *.nupkg | Select-Object -First 1 -ExpandProperty FullName
+          if (-not $package) { throw "No .nupkg file found in ./nupkg" }
+          dotnet nuget push $package --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
