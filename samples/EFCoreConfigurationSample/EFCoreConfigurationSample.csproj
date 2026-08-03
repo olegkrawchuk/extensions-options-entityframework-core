@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Extensions.Options.EntityFrameworkCore\Extensions.Options.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\src\Extensions.Options.EntityFrameworkCore\Extensions.Options.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
 </Project>

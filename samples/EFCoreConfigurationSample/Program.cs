@@ -12,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddPersistense(builder.Configuration);
-builder.Configuration.AddEntityFrameworkCoreConfiguration(builder.Services);
+builder.Configuration.AddEntityFrameworkCoreConfiguration(builder.Services, builder.Configuration);
 
 builder.Services.ConfigureAndValidate<IdentificationOptions>(IdentificationOptions.ConfigName);
 builder.Services.ConfigureAndValidate<SigningOptions>(SigningOptions.ConfigName);

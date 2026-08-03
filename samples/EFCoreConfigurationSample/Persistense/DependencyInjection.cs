@@ -13,12 +13,16 @@ internal static class DependencyInjection
         return services;
     }
 
-    public static ConfigurationManager AddEntityFrameworkCoreConfiguration(this ConfigurationManager configurationManager, IServiceCollection services)
+    public static ConfigurationManager AddEntityFrameworkCoreConfiguration(
+        this ConfigurationManager configurationManager, IServiceCollection services, IConfiguration configuration)
     {
-        configurationManager.AddEntityFramework<ApplicationDbContext, DbOptionsEntity>(builder => builder
-            .UseServiceProvider(services.BuildServiceProvider())
-            .UseQueryFilter(e => e.Value != null)
-            .EnablePeriodicalAutoRefresh(TimeSpan.FromSeconds(15)));
+        configurationManager.AddEntityFrameworkConfiguration<ApplicationDbContext, DbOptionsEntity>(services, options =>
+        {
+            options.ConfigureDbContext = o => UsePostgreSqlProvider(o, configuration);
+            options.Filter = e => e.Value != null;
+            options.PeriodicalRefreshInterval = TimeSpan.FromSeconds(15);
+            options.Diagnostics.LogReloadEvents = true;
+        });
 
         return configurationManager;
     }
