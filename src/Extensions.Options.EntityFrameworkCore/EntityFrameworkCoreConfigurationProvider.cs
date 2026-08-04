@@ -119,7 +119,9 @@ internal class EntityFrameworkCoreConfigurationProvider<TDbContext, TConfigEntit
             throw new InvalidOperationException(
                 $"{typeof(TDbContext).Name} must expose a public constructor accepting DbContextOptions<{typeof(TDbContext).Name}>, " +
                 "the same requirement AddDbContext<T> makes, or a custom factory must be supplied via " +
-                $"{nameof(EntityFrameworkConfigurationOptions<TDbContext, TConfigEntity>.DbContextFactory)}.",
+                $"{nameof(EntityFrameworkConfigurationOptions<TDbContext, TConfigEntity>.DbContextFactory)}, e.g.: " +
+                $"options.{nameof(EntityFrameworkConfigurationOptions<TDbContext, TConfigEntity>.DbContextFactory)} = " +
+                $"o => new {typeof(TDbContext).Name}(o, NullLogger<{typeof(TDbContext).Name}>.Instance);",
                 exception);
         }
         catch (TargetInvocationException exception) when (exception.InnerException != null)

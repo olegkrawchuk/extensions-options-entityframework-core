@@ -2,6 +2,13 @@
 
 Format based on [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.1] - 2026-08-04
+
+### Fixed
+
+- Повідомлення винятку при відсутності відповідного конструктора `TDbContext` тепер містить
+  готовий приклад коду для `options.DbContextFactory` замість лише посилання на властивість.
+
 ## [2.0.0] - 2026-08-04
 
 ### Changed

@@ -19,7 +19,7 @@
 		<PackageTags>ef core efcore configuration</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<VersionPrefix>2.0.0</VersionPrefix>
+		<VersionPrefix>2.0.1</VersionPrefix>
 		<!--<VersionSuffix>beta-2</VersionSuffix>-->
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>

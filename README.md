@@ -72,6 +72,19 @@ Values from the table are then available as regular configuration — through `I
 | `Retry.MaxAttempts` / `InitialDelay` / `BackoffFactor` / `MaxDelay` | the retry policy applied when the database is unavailable |
 | `Diagnostics.LogReloadEvents` | enable structured logging of successful reload events |
 
+> [!TIP]
+> Якщо у вашого `TDbContext` конструктор приймає більше ніж один параметр (наприклад, окремий
+> `ILogger<TDbContext>` для власного логування контексту), дефолтне створення інстансу впаде з
+> `MissingMethodException`. Явно вкажіть фабрику:
+>
+> ```csharp
+> options.DbContextFactory = o => new AppDbContext(o, NullLogger<AppDbContext>.Instance);
+> ```
+>
+> Передавати сюди "справжній" `ILogger` з DI не потрібно і не варто — цей `DbContext`
+> навмисно ізольований від DI застосунку (див. вище), а SQL-логування й так вимкнено за
+> замовчуванням. `NullLogger<TDbContext>.Instance` — правильний дефолт для цього параметра.
+
 > [!WARNING]
 > Version `2.0.0` is an intentional breaking change from `1.0.0`: `UseServiceProvider` was removed,
 > `AddEntityFramework` was renamed to `AddEntityFrameworkConfiguration` with a new signature, and
