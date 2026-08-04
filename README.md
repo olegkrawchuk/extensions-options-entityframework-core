@@ -73,17 +73,18 @@ Values from the table are then available as regular configuration — through `I
 | `Diagnostics.LogReloadEvents` | enable structured logging of successful reload events |
 
 > [!TIP]
-> Якщо у вашого `TDbContext` конструктор приймає більше ніж один параметр (наприклад, окремий
-> `ILogger<TDbContext>` для власного логування контексту), дефолтне створення інстансу впаде з
-> `MissingMethodException`. Явно вкажіть фабрику:
+> If your `TDbContext` constructor takes more than one parameter (for example, a dedicated
+> `ILogger<TDbContext>` for the context's own logging), the default instantiation fails with a
+> `MissingMethodException`. Supply a factory explicitly:
 >
 > ```csharp
 > options.DbContextFactory = o => new AppDbContext(o, NullLogger<AppDbContext>.Instance);
 > ```
 >
-> Передавати сюди "справжній" `ILogger` з DI не потрібно і не варто — цей `DbContext`
-> навмисно ізольований від DI застосунку (див. вище), а SQL-логування й так вимкнено за
-> замовчуванням. `NullLogger<TDbContext>.Instance` — правильний дефолт для цього параметра.
+> There's no need — and no benefit — to pass the application's "real" `ILogger` here: this
+> `DbContext` is intentionally isolated from the application's DI container (see above), and SQL
+> logging is already disabled by default regardless. `NullLogger<TDbContext>.Instance` is the
+> right default for this parameter.
 
 > [!WARNING]
 > Version `2.0.0` is an intentional breaking change from `1.0.0`: `UseServiceProvider` was removed,
